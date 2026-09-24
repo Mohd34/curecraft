@@ -1,0 +1,16 @@
+{
+  "name": "CureCraft Charcuterie & Meat Curing Math",
+  "short_name": "CureCraft",
+  "description": "Precision equilibrium meat curing and Prague Powder food safety engine.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#991B1B",
+  "icons": [
+    {
+      "src": "assets/img/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

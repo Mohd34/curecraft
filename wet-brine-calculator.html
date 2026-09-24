@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equilibrium Wet Brine Calculator | Ham, Pastrami & Corned Beef Math</title>
+  <meta name="description" content="Calculate foolproof equilibrium wet brines for ham, pastrami, corned beef, and poultry. Total system weight math (meat + water) prevents oversalted or dangerous weak brines.">
+  <link rel="canonical" href="https://mohd34.github.io/curecraft/wet-brine-calculator.html">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Equilibrium Wet Brine Calculator | CureCraft">
+  <meta property="og:description" content="Calculate foolproof equilibrium wet brines for ham, pastrami, corned beef, and poultry using total system weight physics.">
+  <meta property="og:url" content="https://mohd34.github.io/curecraft/wet-brine-calculator.html">
+  <meta property="og:image" content="https://mohd34.github.io/curecraft/assets/img/favicon.svg">
+  <meta name="twitter:card" content="summary">
+  
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "CureCraft Equilibrium Wet Brine Calculator",
+        "url": "https://mohd34.github.io/curecraft/wet-brine-calculator.html",
+        "applicationCategory": "UtilityApplication",
+        "description": "Scientific total system weight equilibrium wet brine calculator for hams, corned beef, and pastrami."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does an equilibrium wet brine work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Unlike high-concentration cover brines where meat is soaked for a few hours and risks over-salting, an equilibrium wet brine bases salt and curing powder on the combined weight of the meat plus the water. Over several days or weeks in refrigeration, salt and nitrite diffuse until the meat and surrounding liquid reach identical salinity."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much water should I use in an equilibrium brine?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use only just enough cold water to fully submerge the meat in your container. Weigh the water accurately, add it to the meat weight to determine total system weight, and calculate your salt and Prague Powder from that total."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo" aria-label="CureCraft Home">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="14" fill="#1C1917"/>
+          <path d="M14 18 C14 16 16 14 18 14 L42 14 C44 14 46 16 46 18 L46 34 C46 40 40 46 34 46 L18 46 C16 46 14 44 14 42 Z" fill="#DC2626"/>
+          <rect x="42" y="32" width="14" height="6" rx="3" fill="#D97706" transform="rotate(45 42 32)"/>
+          <polygon points="26,22 28,26 32,26 29,28 30,32 26,30 22,32 23,28 20,26 24,26" fill="#FFFFFF"/>
+        </svg>
+        <div>
+          <span>CureCraft</span>
+          <span class="brand-tagline">Charcuterie & Curing Math</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Dry Cure</a></li>
+          <li><a href="wet-brine-calculator.html" class="active">Wet Brine</a></li>
+          <li><a href="charcuterie-drying-calculator.html">Drying & Weight Loss</a></li>
+          <li><a href="curing-time-calculator.html">Curing Time</a></li>
+          <li><a href="nitrite-converter.html">Nitrite PPM</a></li>
+          <li><a href="biltong-calculator.html">Biltong</a></li>
+          <li><a href="seo-dashboard.html">SEO Hub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <ul class="breadcrumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-current="page">Equilibrium Wet Brine Calculator</li>
+    </ul>
+
+    <section class="hero">
+      <span class="hero-badge">🌊 Total System Mass Equilibrium</span>
+      <h1>Equilibrium Wet Brine & Immersion Bath Calculator</h1>
+      <p class="lead">
+        Scientifically balance liquid volume and meat mass for whole hams, corned beef briskets, pastrami, and poultry. Prevents salty exteriors or unsafe pale centers.
+      </p>
+    </section>
+
+    <div class="calc-grid">
+      <!-- Input Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Brine System Parameters</h2>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--brand-wine);">Total Mass Physics</span>
+        </div>
+
+        <!-- Presets -->
+        <label class="form-label">
+          <span>Wet Curing Presets</span>
+          <span class="form-label-hint">Proven salinity & curing ratios</span>
+        </label>
+        <div class="preset-chips">
+          <button type="button" class="preset-chip active" onclick="applyWetPreset('cornedBeef')">🥩 Corned Beef Brisket</button>
+          <button type="button" class="preset-chip" onclick="applyWetPreset('holidayHam')">🍖 Bone-In Holiday Ham</button>
+          <button type="button" class="preset-chip" onclick="applyWetPreset('pastrami')">🥪 Pastrami Immersion</button>
+          <button type="button" class="preset-chip" onclick="applyWetPreset('turkey')">🦃 Cured Turkey / Poultry</button>
+        </div>
+
+        <form id="wet-brine-form" onsubmit="return false;">
+          <div class="form-group">
+            <div class="form-label">
+              <span>Meat Green Weight</span>
+              <span class="form-label-hint">Trimmed meat weight (g)</span>
+            </div>
+            <div class="input-group">
+              <input type="number" id="wet-meat-weight" class="form-input" value="2000" min="10" step="10" oninput="recalculateWetBrine()">
+              <span class="input-suffix">grams</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Water Volume / Weight</span>
+              <span class="form-label-hint">Amount needed to submerge meat (1g = 1ml)</span>
+            </div>
+            <div class="input-group">
+              <input type="number" id="wet-water-weight" class="form-input" value="2000" min="10" step="10" oninput="recalculateWetBrine()">
+              <span class="input-suffix">ml / g</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Target Equilibrium Salinity: <strong id="wet-salt-val" style="color:var(--brand-wine);">2.50%</strong></span>
+              <span class="form-label-hint">Finished meat salt percentage</span>
+            </div>
+            <input type="range" id="wet-salt-pct" class="range-slider" min="1.8" max="3.2" step="0.05" value="2.5" oninput="updateWetSalt(this.value)">
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Sugar / Sweetener: <strong id="wet-sugar-val" style="color:var(--brand-salt);">1.50%</strong></span>
+              <span class="form-label-hint">Brown sugar, honey, or molasses</span>
+            </div>
+            <input type="range" id="wet-sugar-pct" class="range-slider" min="0" max="4.0" step="0.1" value="1.5" oninput="updateWetSugar(this.value)">
+          </div>
+        </form>
+      </section>
+
+      <!-- Output Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Brine Recipe Specification</h2>
+          <span class="badge" style="background:var(--brand-sage-light); color:var(--brand-sage); padding:4px 8px; border-radius:6px; font-weight:700; font-size:0.8rem;">
+            ✓ Total System Verified
+          </span>
+        </div>
+
+        <div class="safety-banner optimal">
+          <div style="font-size:1.4rem;">🌊</div>
+          <div>
+            <strong>Total System Weight: <span id="res-sys-weight">4000.0 g</span></strong>
+            <p>Calculated across both meat and water to ensure uniform osmotic balance.</p>
+          </div>
+        </div>
+
+        <div class="results-panel">
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🧂 Pure Table / Kosher Salt</span>
+              <span class="ingredient-sub">Dissolve completely in warm water, then chill</span>
+            </div>
+            <span class="ingredient-val ingredient-highlight" id="res-wet-salt">90.63 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🌸 Prague Powder #1 (Insta Cure #1)</span>
+              <span class="ingredient-sub">0.25% of total system mass (156.3 PPM NaNO₂)</span>
+            </div>
+            <span class="ingredient-val" id="res-wet-cure" style="color:var(--brand-wine);">10.00 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🍁 Sugar / Sweetener</span>
+              <span class="ingredient-sub">Brown sugar, cane sugar, or pure maple syrup</span>
+            </div>
+            <span class="ingredient-val" id="res-wet-sugar">60.00 g</span>
+          </div>
+
+          <div class="ingredient-row" style="background:var(--bg-surface); padding:0.75rem; border-radius:var(--radius-sm); margin-top:0.5rem;">
+            <div class="ingredient-name">
+              <strong>Initial Liquid Brine Salinity</strong>
+              <span class="ingredient-sub">Concentration before meat absorption begins</span>
+            </div>
+            <strong class="ingredient-val" id="res-brine-salinity" style="font-size:1.2rem;">5.00%</strong>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="stat-label">Equilibrium Meat Salt</div>
+            <div class="stat-value" id="res-target-salt">2.50%</div>
+            <div class="stat-sub">Final In-Meat Salinity</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Nitrite Concentration</div>
+            <div class="stat-value" style="color:var(--brand-wine);">156 PPM</div>
+            <div class="stat-sub">USDA Standard</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Estimated Brining Time</div>
+            <div class="stat-value" id="res-wet-days">10–14 Days</div>
+            <div class="stat-sub">In 38°F fridge</div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="copyWetFormula()">📋 Copy Brine Formula</button>
+          <button class="btn btn-secondary" onclick="window.print()">🖨️ Print Brining Sheet</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Educational Content -->
+    <section class="guide-content">
+      <h2>Why Traditional "Cover Brines" Fail Home Cooks</h2>
+      <p>
+        Most old-fashioned recipes for corned beef or wet-cured ham instruct you to make a strong brine—often 10% to 15% salinity (using 1 to 1.5 cups of salt per gallon)—and soak the meat for "3 to 5 days".
+      </p>
+      <p>
+        This method relies on <em>gradient diffusion</em>. The exterior of the meat absorbs salt at an alarming rate, while the center lags behind. If you remove the meat 12 hours too late, the outer 1 inch is inedibly salty, requiring hours of freshwater boiling to leach out excess sodium. If you remove it 12 hours too early, the deep interior has not reached the 100+ PPM nitrite threshold required to prevent bacterial growth.
+      </p>
+
+      <h3>The Equilibrium Immersion Solution</h3>
+      <p>
+        In an <strong>equilibrium wet brine</strong>, you calculate salt and curing agents based on the combined mass:
+      </p>
+      <div class="formula-box">
+        Total System Mass (M_total) = Meat Weight (g) + Water Weight (g)<br>
+        Prague Powder #1 (g) = M_total × 0.0025 (0.25%)<br>
+        Total Target Salt (g) = M_total × Target Salinity %<br>
+        Pure Salt to Add (g) = Total Target Salt - (Prague Powder × 0.9375)
+      </div>
+      <p>
+        Because the total amount of salt in the container matches the exact target salinity of the final meat, it is physically impossible for the meat to absorb too much salt. Once the gradient flattens out, the system reaches permanent equilibrium.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <span>© 2026 CureCraft. 100% Client-Side Physics & Food Safety Engine.</span>
+      <a href="index.html">← Back to Universal Dry Cure Calculator</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/calculators.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    const WET_PRESETS = {
+      cornedBeef: { saltPct: 2.5, sugarPct: 1.5 },
+      holidayHam: { saltPct: 2.3, sugarPct: 2.0 },
+      pastrami: { saltPct: 2.4, sugarPct: 1.5 },
+      turkey: { saltPct: 2.0, sugarPct: 1.0 }
+    };
+
+    function applyWetPreset(key) {
+      document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      const p = WET_PRESETS[key];
+      if (!p) return;
+      document.getElementById('wet-salt-pct').value = p.saltPct;
+      document.getElementById('wet-salt-val').textContent = p.saltPct.toFixed(2) + '%';
+      document.getElementById('wet-sugar-pct').value = p.sugarPct;
+      document.getElementById('wet-sugar-val').textContent = p.sugarPct.toFixed(2) + '%';
+      recalculateWetBrine();
+    }
+
+    function updateWetSalt(v) {
+      document.getElementById('wet-salt-val').textContent = parseFloat(v).toFixed(2) + '%';
+      recalculateWetBrine();
+    }
+
+    function updateWetSugar(v) {
+      document.getElementById('wet-sugar-val').textContent = parseFloat(v).toFixed(2) + '%';
+      recalculateWetBrine();
+    }
+
+    function recalculateWetBrine() {
+      const meatG = parseFloat(document.getElementById('wet-meat-weight').value) || 0;
+      const waterG = parseFloat(document.getElementById('wet-water-weight').value) || 0;
+      const saltPct = parseFloat(document.getElementById('wet-salt-pct').value) || 2.5;
+      const sugarPct = parseFloat(document.getElementById('wet-sugar-pct').value) || 1.5;
+
+      const res = CureMath.calculateEquilibriumWetBrine({
+        meatWeightG: meatG,
+        waterWeightG: waterG,
+        targetSaltPct: saltPct,
+        targetSugarPct: sugarPct
+      });
+
+      if (res.error) return;
+
+      document.getElementById('res-sys-weight').textContent = res.totalSystemWeightG.toFixed(1) + ' g';
+      document.getElementById('res-wet-salt').textContent = res.pureSaltG.toFixed(2) + ' g';
+      document.getElementById('res-wet-cure').textContent = res.cureWeightG.toFixed(2) + ' g';
+      document.getElementById('res-wet-sugar').textContent = res.sugarG.toFixed(2) + ' g';
+      document.getElementById('res-brine-salinity').textContent = res.brineSalinityPct.toFixed(2) + '%';
+      document.getElementById('res-target-salt').textContent = res.targetSaltPct.toFixed(2) + '%';
+
+      // Estimate time: 1 day per 1/2 inch thickness or ~10-14 days for 2kg cut
+      const days = Math.max(7, Math.ceil(Math.sqrt(meatG / 150) + 4));
+      document.getElementById('res-wet-days').textContent = `${days}–${days + 4} Days`;
+    }
+
+    function copyWetFormula() {
+      const meat = document.getElementById('wet-meat-weight').value;
+      const water = document.getElementById('wet-water-weight').value;
+      const salt = document.getElementById('res-wet-salt').textContent;
+      const cure = document.getElementById('res-wet-cure').textContent;
+      const sugar = document.getElementById('res-wet-sugar').textContent;
+
+      const txt = `CureCraft Equilibrium Wet Brine Recipe\n` +
+        `------------------------------------\n` +
+        `Meat Weight: ${meat}g\n` +
+        `Water Volume: ${water}ml (g)\n` +
+        `Pure Salt: ${salt}\n` +
+        `Prague Powder #1: ${cure} (156 PPM NaNO₂)\n` +
+        `Sugar: ${sugar}\n` +
+        `Calculated via CureCraft (https://mohd34.github.io/curecraft/wet-brine-calculator.html)`;
+
+      copyRecipeToClipboard(txt);
+    }
+
+    recalculateWetBrine();
+  </script>
+</body>
+</html>

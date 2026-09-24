@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>International Curing Salt Converter | US Prague Powder vs EU Peklosol PPM</title>
+  <meta name="description" content="Safely convert between US Prague Powder #1 (6.25%), European Peklosol / Nitritpökelsalz (0.6%), and Australian Curing Salt (5.0%). Calculate exact USDA nitrite PPM.">
+  <link rel="canonical" href="https://mohd34.github.io/curecraft/nitrite-converter.html">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="International Curing Salt Converter | CureCraft">
+  <meta property="og:description" content="Safely convert between US Prague Powder #1 (6.25%), European Peklosol (0.6%), and Australian curing salt with exact nitrite PPM safety checks.">
+  <meta property="og:url" content="https://mohd34.github.io/curecraft/nitrite-converter.html">
+  <meta property="og:image" content="https://mohd34.github.io/curecraft/assets/img/favicon.svg">
+  <meta name="twitter:card" content="summary">
+  
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "CureCraft International Curing Salt Converter",
+        "url": "https://mohd34.github.io/curecraft/nitrite-converter.html",
+        "applicationCategory": "UtilityApplication",
+        "description": "Safety converter between international curing salt standards: US 6.25%, EU 0.6%, AU 5.0%."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo" aria-label="CureCraft Home">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="14" fill="#1C1917"/>
+          <path d="M14 18 C14 16 16 14 18 14 L42 14 C44 14 46 16 46 18 L46 34 C46 40 40 46 34 46 L18 46 C16 46 14 44 14 42 Z" fill="#DC2626"/>
+          <rect x="42" y="32" width="14" height="6" rx="3" fill="#D97706" transform="rotate(45 42 32)"/>
+          <polygon points="26,22 28,26 32,26 29,28 30,32 26,30 22,32 23,28 20,26 24,26" fill="#FFFFFF"/>
+        </svg>
+        <div>
+          <span>CureCraft</span>
+          <span class="brand-tagline">Charcuterie & Curing Math</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Dry Cure</a></li>
+          <li><a href="wet-brine-calculator.html">Wet Brine</a></li>
+          <li><a href="charcuterie-drying-calculator.html">Drying & Weight Loss</a></li>
+          <li><a href="curing-time-calculator.html">Curing Time</a></li>
+          <li><a href="nitrite-converter.html" class="active">Nitrite PPM</a></li>
+          <li><a href="biltong-calculator.html">Biltong</a></li>
+          <li><a href="seo-dashboard.html">SEO Hub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <ul class="breadcrumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-current="page">International Nitrite Converter</li>
+    </ul>
+
+    <section class="hero">
+      <span class="hero-badge">🌐 Global Charcuterie Safety Conversion</span>
+      <h1>International Curing Salt & Nitrite PPM Converter</h1>
+      <p class="lead">
+        Safely translate recipes between American Prague Powder (6.25%), European Peklosol (0.6%), and Australian Cure (5.0%). Prevent toxic overdoses and dangerous under-curing.
+      </p>
+    </section>
+
+    <div class="calc-grid">
+      <!-- Input Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Curing Salt Standard & Target</h2>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--brand-wine);">Concentration Physics</span>
+        </div>
+
+        <form id="converter-form" onsubmit="return false;">
+          <div class="form-group">
+            <div class="form-label">
+              <span>Target Meat Green Weight</span>
+              <span class="form-label-hint">Weight in grams</span>
+            </div>
+            <div class="input-group">
+              <input type="number" id="conv-meat-weight" class="form-input" value="1000" min="10" step="10" oninput="recalculateConverter()">
+              <span class="input-suffix">grams</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Your Available Curing Salt Standard</span>
+              <span class="form-label-hint">What is printed on your package</span>
+            </div>
+            <select id="conv-source-type" class="form-select" onchange="recalculateConverter()">
+              <option value="cure1" selected>US / Canada: Prague Powder #1 (6.25% NaNO₂)</option>
+              <option value="peklosol">Europe: Peklosol / Nitritpökelsalz (0.6% NaNO₂)</option>
+              <option value="aussie">Australia / NZ: Quick Cure / Kuring Salt (5.0% NaNO₂)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Target Sodium Nitrite Concentration: <strong id="target-ppm-val" style="color:var(--brand-wine);">156 PPM</strong></span>
+              <span class="form-label-hint">USDA standard: 120–200 PPM</span>
+            </div>
+            <input type="range" id="conv-target-ppm" class="range-slider" min="100" max="200" step="1" value="156" oninput="updateTargetPpm(this.value)">
+          </div>
+        </form>
+      </section>
+
+      <!-- Output Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Equivalent Dosage Across Global Standards</h2>
+          <span class="badge" style="background:var(--brand-sage-light); color:var(--brand-sage); padding:4px 8px; border-radius:6px; font-weight:700; font-size:0.8rem;">
+            ✓ Food Safety Verified
+          </span>
+        </div>
+
+        <!-- Major Warning Callout -->
+        <div id="conv-warning-banner" class="safety-banner optimal">
+          <div style="font-size:1.4rem;">⚠️</div>
+          <div>
+            <strong id="conv-warning-title">Safety Alert: Salt Content Discrepancy</strong>
+            <p id="conv-warning-desc">European Peklosol is already mixed at table-salt strength (99.4% NaCl). If using Peklosol, do NOT add extra salt!</p>
+          </div>
+        </div>
+
+        <div class="results-panel">
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>Required Curing Salt to Weigh</span>
+              <span class="ingredient-sub" id="conv-cure-desc">For your selected standard</span>
+            </div>
+            <span class="ingredient-val ingredient-highlight" id="conv-required-weight">2.50 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>Percentage of Meat Weight</span>
+              <span class="ingredient-sub">Dosage ratio</span>
+            </div>
+            <span class="ingredient-val" id="conv-ratio">0.25%</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>Salt Delivered by this Curing Agent</span>
+              <span class="ingredient-sub">Must be deducted from base recipe salt</span>
+            </div>
+            <span class="ingredient-val" id="conv-salt-delivered">2.34 g</span>
+          </div>
+        </div>
+
+        <!-- Cross Comparison Table -->
+        <h3 style="font-size:1rem; font-weight:700; margin:1rem 0 0.5rem 0;">Equivalents for This Batch:</h3>
+        <table class="data-table" style="margin:0 0 1.5rem 0;">
+          <thead>
+            <tr>
+              <th>Standard</th>
+              <th>Concentration</th>
+              <th class="num">Amount (g)</th>
+              <th class="num">% of Meat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>US Prague Powder #1</strong></td>
+              <td>6.25% NaNO₂</td>
+              <td class="num" id="comp-us-g">2.50 g</td>
+              <td class="num" id="comp-us-pct">0.25%</td>
+            </tr>
+            <tr>
+              <td><strong>EU Peklosol (NPS)</strong></td>
+              <td>0.60% NaNO₂</td>
+              <td class="num" id="comp-eu-g">26.00 g</td>
+              <td class="num" id="comp-eu-pct">2.60%</td>
+            </tr>
+            <tr>
+              <td><strong>Australian Cure</strong></td>
+              <td>5.00% NaNO₂</td>
+              <td class="num" id="comp-au-g">3.12 g</td>
+              <td class="num" id="comp-au-pct">0.31%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="copyConversion()">📋 Copy Conversion Notes</button>
+          <a href="index.html" class="btn btn-secondary">← Back to Universal Dry Cure</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Educational Content -->
+    <section class="guide-content">
+      <h2>The Life-Threatening Danger of Trans-Atlantic Curing Recipes</h2>
+      <p>
+        Charcuterie forums on Reddit and Facebook are frequently filled with dangerous misunderstandings between American and European curing standards:
+      </p>
+      <ul>
+        <li>
+          <strong>Scenario 1 (Fatal Overdose Risk):</strong> An American home cook finds a Polish *Kiełbasa* recipe calling for "25 grams of curing salt per kilo." The recipe assumed <em>Peklosol</em> (0.6% nitrite). If the American mistakenly weighs out 25 grams of <em>Prague Powder #1</em> (6.25% nitrite), the sausage will contain <strong>1,562 PPM of sodium nitrite</strong>—ten times the safe legal limit, enough to cause acute nitrite toxicity (methemoglobinemia).
+        </li>
+        <li>
+          <strong>Scenario 2 (Under-Curing / Botulism Risk):</strong> A European home cook finds an American bacon recipe calling for "2.5 grams of Cure #1 per kilo." Thinking all curing salts are identical, they weigh out 2.5 grams of Peklosol. The meat receives only <strong>15 PPM of nitrite</strong>—far below the 100+ PPM threshold required to suppress <em>Clostridium botulinum</em> spores.
+        </li>
+      </ul>
+
+      <div class="formula-box">
+        <strong>The General Nitrite PPM Equation:</strong><br><br>
+        Required Salt (g) = [Target Nitrite PPM × Meat Weight (g)] / [Nitrite Ratio × 1,000,000]
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <span>© 2026 CureCraft. 100% Client-Side Physics & Food Safety Engine.</span>
+      <a href="index.html">← Back to Universal Dry Cure Calculator</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/calculators.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    function updateTargetPpm(v) {
+      document.getElementById('target-ppm-val').textContent = v + ' PPM';
+      recalculateConverter();
+    }
+
+    function recalculateConverter() {
+      const meatG = parseFloat(document.getElementById('conv-meat-weight').value) || 1000;
+      const src = document.getElementById('conv-source-type').value;
+      const ppm = parseFloat(document.getElementById('conv-target-ppm').value) || 156;
+
+      const res = CureMath.convertCuringSalt({
+        meatWeightG: meatG,
+        sourceSaltType: src,
+        targetPpm: ppm
+      });
+
+      document.getElementById('conv-required-weight').textContent = res.requiredWeightG.toFixed(2) + ' g';
+      document.getElementById('conv-ratio').textContent = res.percentageOfMeat.toFixed(2) + '%';
+      document.getElementById('conv-salt-delivered').textContent = res.saltDeliveredG.toFixed(2) + ' g';
+
+      // Comparison table
+      const usG = (ppm * meatG) / (0.0625 * 1000000);
+      const euG = (ppm * meatG) / (0.006 * 1000000);
+      const auG = (ppm * meatG) / (0.05 * 1000000);
+
+      document.getElementById('comp-us-g').textContent = usG.toFixed(2) + ' g';
+      document.getElementById('comp-us-pct').textContent = ((usG / meatG) * 100).toFixed(2) + '%';
+
+      document.getElementById('comp-eu-g').textContent = euG.toFixed(2) + ' g';
+      document.getElementById('comp-eu-pct').textContent = ((euG / meatG) * 100).toFixed(2) + '%';
+
+      document.getElementById('comp-au-g').textContent = auG.toFixed(2) + ' g';
+      document.getElementById('comp-au-pct').textContent = ((auG / meatG) * 100).toFixed(2) + '%';
+
+      const banner = document.getElementById('conv-warning-banner');
+      const title = document.getElementById('conv-warning-title');
+      const desc = document.getElementById('conv-warning-desc');
+
+      if (src === 'peklosol') {
+        banner.className = 'safety-banner warning';
+        title.textContent = 'EU Peklosol: Zero Extra Salt Required!';
+        desc.textContent = `Peklosol is 99.4% table salt. Using ${res.requiredWeightG.toFixed(1)}g gives exactly ${res.percentageOfMeat.toFixed(2)}% total salinity. Do NOT add common kosher or table salt.`;
+      } else {
+        banner.className = 'safety-banner optimal';
+        title.textContent = 'High-Concentration Cure: Add Separate Pure Salt';
+        desc.textContent = `Using ${res.requiredWeightG.toFixed(2)}g of ${src === 'cure1' ? 'Prague Powder #1' : 'Australian Cure'}. Remember to deduct ${res.saltDeliveredG.toFixed(2)}g from your base salt formula.`;
+      }
+    }
+
+    function copyConversion() {
+      const meat = document.getElementById('conv-meat-weight').value;
+      const ppm = document.getElementById('conv-target-ppm').value;
+      const us = document.getElementById('comp-us-g').textContent;
+      const eu = document.getElementById('comp-eu-g').textContent;
+      const au = document.getElementById('comp-au-g').textContent;
+
+      const txt = `CureCraft International Curing Salt Equivalents\n` +
+        `----------------------------------------------\n` +
+        `Batch Meat Weight: ${meat}g\n` +
+        `Target Nitrite: ${ppm} PPM\n` +
+        `- US Prague Powder #1 (6.25%): ${us}\n` +
+        `- EU Peklosol (0.60%): ${eu}\n` +
+        `- Australian Cure (5.00%): ${au}\n` +
+        `Calculated via CureCraft (https://mohd34.github.io/curecraft/nitrite-converter.html)`;
+
+      copyRecipeToClipboard(txt);
+    }
+
+    recalculateConverter();
+  </script>
+</body>
+</html>

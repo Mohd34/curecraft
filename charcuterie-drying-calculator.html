@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charcuterie Weight Loss Calculator | Salami & Bresaola Drying Tracker</title>
+  <meta name="description" content="Calculate target weight loss and water activity (aw) for dry-cured salumi. Track bresaola, coppa, pancetta, and salami moisture loss from green weight to safe consumption.">
+  <link rel="canonical" href="https://mohd34.github.io/curecraft/charcuterie-drying-calculator.html">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Charcuterie Weight Loss & Drying Tracker | CureCraft">
+  <meta property="og:description" content="Track moisture loss and water activity (aw) from green weight to finished salumi. Essential safety calculator for home charcuterie.">
+  <meta property="og:url" content="https://mohd34.github.io/curecraft/charcuterie-drying-calculator.html">
+  <meta property="og:image" content="https://mohd34.github.io/curecraft/assets/img/favicon.svg">
+  <meta name="twitter:card" content="summary">
+  
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "CureCraft Charcuterie Drying & Weight Loss Calculator",
+        "url": "https://mohd34.github.io/curecraft/charcuterie-drying-calculator.html",
+        "applicationCategory": "UtilityApplication",
+        "description": "Scientific moisture loss and water activity tracker for artisan dry-cured salumi, bresaola, coppa, and salami."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How much weight should charcuterie lose before eating?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Most whole-muscle charcuterie (bresaola, lonzino, duck prosciutto) must lose 35% to 38% of its initial green weight. Fermented dry sausages like salami typically target 38% to 42% weight loss. At 35% moisture loss, the water activity (aw) typically drops below 0.88, rendering the meat microbiologically stable at cellar temperatures."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is case hardening in charcuterie?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Case hardening occurs when the drying chamber relative humidity is too low (below 70%), causing the exterior surface of the meat to dry and form an impenetrable crust while the center remains wet and squishy. This traps internal moisture and can cause center-rot and spoilage."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo" aria-label="CureCraft Home">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="14" fill="#1C1917"/>
+          <path d="M14 18 C14 16 16 14 18 14 L42 14 C44 14 46 16 46 18 L46 34 C46 40 40 46 34 46 L18 46 C16 46 14 44 14 42 Z" fill="#DC2626"/>
+          <rect x="42" y="32" width="14" height="6" rx="3" fill="#D97706" transform="rotate(45 42 32)"/>
+          <polygon points="26,22 28,26 32,26 29,28 30,32 26,30 22,32 23,28 20,26 24,26" fill="#FFFFFF"/>
+        </svg>
+        <div>
+          <span>CureCraft</span>
+          <span class="brand-tagline">Charcuterie & Curing Math</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Dry Cure</a></li>
+          <li><a href="wet-brine-calculator.html">Wet Brine</a></li>
+          <li><a href="charcuterie-drying-calculator.html" class="active">Drying & Weight Loss</a></li>
+          <li><a href="curing-time-calculator.html">Curing Time</a></li>
+          <li><a href="nitrite-converter.html">Nitrite PPM</a></li>
+          <li><a href="biltong-calculator.html">Biltong</a></li>
+          <li><a href="seo-dashboard.html">SEO Hub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <ul class="breadcrumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-current="page">Charcuterie Drying & Weight Loss Calculator</li>
+    </ul>
+
+    <section class="hero">
+      <span class="hero-badge">📉 Microbial Stability & Water Activity (aw)</span>
+      <h1>Charcuterie Target Weight Loss Calculator</h1>
+      <p class="lead">
+        Track moisture loss from raw green weight to microbial safety. Calculate exact target finished weight and estimated water activity ($a_w \le 0.88$) for dry-cured salumi.
+      </p>
+    </section>
+
+    <div class="calc-grid">
+      <!-- Input Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Curing Chamber Tracking</h2>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--brand-wine);">Whole Muscle & Salumi</span>
+        </div>
+
+        <label class="form-label">
+          <span>Target Moisture Loss Presets</span>
+          <span class="form-label-hint">Standard charcuterie milestones</span>
+        </label>
+        <div class="preset-chips">
+          <button type="button" class="preset-chip active" onclick="applyLossPreset(35, 'Bresaola')">🥩 Bresaola (35% Loss)</button>
+          <button type="button" class="preset-chip" onclick="applyLossPreset(38, 'Coppa')">🥓 Capicola / Coppa (38% Loss)</button>
+          <button type="button" class="preset-chip" onclick="applyLossPreset(40, 'Salami')">🥖 Fermented Salami (40% Loss)</button>
+          <button type="button" class="preset-chip" onclick="applyLossPreset(36, 'Pancetta')">🥓 Flat Pancetta (36% Loss)</button>
+          <button type="button" class="preset-chip" onclick="applyLossPreset(42, 'Lonzino')">🥩 Lonzino / Lean Loin (42% Loss)</button>
+        </div>
+
+        <form id="drying-form" onsubmit="return false;">
+          <div class="form-group">
+            <div class="form-label">
+              <span>Initial Green Weight (Day 0)</span>
+              <span class="form-label-hint">Weight after cure rinse & before hanging</span>
+            </div>
+            <div class="input-group">
+              <input type="number" id="green-weight" class="form-input" value="1250" min="10" step="1" oninput="recalculateDrying()">
+              <span class="input-suffix">grams</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Target Moisture Loss: <strong id="target-loss-val" style="color:var(--brand-wine);">35.0%</strong></span>
+              <span class="form-label-hint">Safe preservation range: 35%–42%</span>
+            </div>
+            <input type="range" id="target-loss-pct" class="range-slider" min="30" max="45" step="0.5" value="35" oninput="updateTargetLoss(this.value)">
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Current Scale Weight (Today)</span>
+              <span class="form-label-hint">Current weight in grams</span>
+            </div>
+            <div class="input-group">
+              <input type="number" id="current-weight" class="form-input" value="980" min="10" step="1" oninput="recalculateDrying()">
+              <span class="input-suffix">grams</span>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Output Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Drying Status & Safety Audit</h2>
+          <span class="badge" id="drying-safety-badge" style="background:var(--brand-amber-light); color:var(--brand-amber); padding:4px 8px; border-radius:6px; font-weight:700; font-size:0.8rem;">
+            ⏳ In Progress (Curing)
+          </span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div style="margin-bottom:1.5rem;">
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:0.4rem;">
+            <span>Drying Progress</span>
+            <span id="res-progress-pct" style="color:var(--brand-wine);">61.7% Complete</span>
+          </div>
+          <div style="background:var(--bg-tertiary); height:12px; border-radius:9999px; overflow:hidden;">
+            <div id="res-progress-bar" style="background:var(--brand-wine); height:100%; width:61.7%; transition:width 0.3s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Metric Details -->
+        <div class="results-panel">
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>Target Finished Weight</span>
+              <span class="ingredient-sub">Pull from curing chamber when scale reads this</span>
+            </div>
+            <span class="ingredient-val ingredient-highlight" id="res-target-weight">812.5 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>Total Weight Lost So Far</span>
+              <span class="ingredient-sub">Moisture evaporated into curing chamber</span>
+            </div>
+            <span class="ingredient-val" id="res-lost-weight">270.0 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>Remaining Moisture to Lose</span>
+              <span class="ingredient-sub">Weight left to shed before safe slice threshold</span>
+            </div>
+            <span class="ingredient-val" id="res-remaining-weight" style="color:var(--brand-salt);">167.5 g</span>
+          </div>
+
+          <div class="ingredient-row" style="background:var(--bg-surface); padding:0.75rem; border-radius:var(--radius-sm); margin-top:0.5rem;">
+            <div class="ingredient-name">
+              <strong>Current Moisture Loss %</strong>
+              <span class="ingredient-sub">Current evaporation percentage</span>
+            </div>
+            <strong class="ingredient-val" id="res-current-loss" style="font-size:1.2rem;">21.60%</strong>
+          </div>
+        </div>
+
+        <!-- Safety Stats -->
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="stat-label">Estimated Water Activity</div>
+            <div class="stat-value" id="res-aw" style="font-size:1.3rem;">0.921 aw</div>
+            <div class="stat-sub">Target: &lt; 0.880 aw</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Edible Status</div>
+            <div class="stat-value" id="res-edible-status" style="font-size:1.15rem; color:var(--brand-amber);">NOT READY</div>
+            <div class="stat-sub">Needs &ge; 35% Loss</div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="copyDryingStatus()">📋 Copy Drying Log Entry</button>
+          <a href="guides/charcuterie-weight-loss-guide.html" class="btn btn-outline">📖 Preventing Case Hardening →</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Educational Content -->
+    <section class="guide-content">
+      <h2>The Microbiology of Charcuterie Weight Loss</h2>
+      <p>
+        In fresh meat, <strong>water activity ($a_w$)</strong> is approximately 0.99. In this free-moisture environment, dangerous bacteria such as <em>Salmonella</em>, <em>Listeria monocytogenes</em>, and <em>Staphylococcus aureus</em> can proliferate rapidly.
+      </p>
+      <p>
+        Charcuterie preservation relies on a dual-hurdle barrier:
+      </p>
+      <ol>
+        <li><strong>Sodium Chloride & Nitrite Hurdle:</strong> Initial salt binds free water and creates an osmotic pressure barrier.</li>
+        <li><strong>Desiccation Hurdle (Weight Loss):</strong> As water slowly evaporates through the casing or muscle boundary, the solute concentration skyrockets, driving the water activity below <strong>$a_w = 0.88$</strong>. At this threshold, virtually all pathogenic foodborne bacteria are rendered dormant or unable to reproduce.</li>
+      </ol>
+
+      <div class="formula-box">
+        <strong>Weight Loss & Target Equations:</strong><br><br>
+        Target Finished Weight (W_finish) = W_green × [1 - (Target Loss % / 100)]<br>
+        Current Loss % = [(W_green - W_current) / W_green] × 100<br>
+        Estimated Water Activity (aw) ≈ 0.99 - (Current Loss % × 0.0032)
+      </div>
+
+      <h3>Drying Chamber Conditions</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Ideal Range</th>
+            <th>Failure Consequence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Temperature</strong></td>
+            <td>50°F to 57°F (10°C to 14°C)</td>
+            <td>Too warm: spoilage bacteria thrive. Too cold: drying stalls, fat fails to set.</td>
+          </tr>
+          <tr>
+            <td><strong>Relative Humidity (RH)</strong></td>
+            <td>70% to 75% RH</td>
+            <td>Too low (&lt;65%): Case hardening. Too high (&gt;82%): Slime & sour mold.</td>
+          </tr>
+          <tr>
+            <td><strong>Air Circulation</strong></td>
+            <td>0.1 to 0.3 m/s gentle breeze</td>
+            <td>Too fast: Case hardening. Stagnant: Mold overgrowth.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <span>© 2026 CureCraft. 100% Client-Side Physics & Food Safety Engine.</span>
+      <a href="index.html">← Back to Universal Dry Cure Calculator</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/calculators.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    function applyLossPreset(pct, label) {
+      document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('target-loss-pct').value = pct;
+      document.getElementById('target-loss-val').textContent = pct.toFixed(1) + '%';
+      recalculateDrying();
+    }
+
+    function updateTargetLoss(v) {
+      document.getElementById('target-loss-val').textContent = parseFloat(v).toFixed(1) + '%';
+      recalculateDrying();
+    }
+
+    function recalculateDrying() {
+      const greenG = parseFloat(document.getElementById('green-weight').value) || 0;
+      const targetPct = parseFloat(document.getElementById('target-loss-pct').value) || 35;
+      const currentG = parseFloat(document.getElementById('current-weight').value) || greenG;
+
+      const res = CureMath.calculateCharcuterieDrying({
+        greenWeightG: greenG,
+        targetLossPct: targetPct,
+        currentWeightG: currentG
+      });
+
+      if (res.error) return;
+
+      document.getElementById('res-target-weight').textContent = res.targetFinishedWeightG.toFixed(1) + ' g';
+      document.getElementById('res-lost-weight').textContent = res.weightLostG.toFixed(1) + ' g';
+      document.getElementById('res-remaining-weight').textContent = res.remainingToLoseG.toFixed(1) + ' g';
+      document.getElementById('res-current-loss').textContent = res.currentLossPct.toFixed(2) + '%';
+      document.getElementById('res-progress-pct').textContent = res.progressPct.toFixed(1) + '% Complete';
+      document.getElementById('res-progress-bar').style.width = Math.min(100, res.progressPct) + '%';
+      document.getElementById('res-aw').textContent = res.estimatedAw.toFixed(3) + ' aw';
+
+      const badge = document.getElementById('drying-safety-badge');
+      const edibleEl = document.getElementById('res-edible-status');
+
+      if (res.isSafeToEat) {
+        badge.textContent = '✓ Ready to Slice & Eat';
+        badge.style.background = 'var(--brand-sage-light)';
+        badge.style.color = 'var(--brand-sage)';
+        edibleEl.textContent = 'SAFE / READY';
+        edibleEl.style.color = 'var(--brand-sage)';
+      } else {
+        badge.textContent = '⏳ In Progress (Curing)';
+        badge.style.background = 'var(--brand-amber-light)';
+        badge.style.color = 'var(--brand-amber)';
+        edibleEl.textContent = 'NOT READY';
+        edibleEl.style.color = 'var(--brand-amber)';
+      }
+    }
+
+    function copyDryingStatus() {
+      const green = document.getElementById('green-weight').value;
+      const current = document.getElementById('current-weight').value;
+      const target = document.getElementById('res-target-weight').textContent;
+      const loss = document.getElementById('res-current-loss').textContent;
+      const rem = document.getElementById('res-remaining-weight').textContent;
+      const aw = document.getElementById('res-aw').textContent;
+
+      const txt = `CureCraft Charcuterie Drying Log Entry\n` +
+        `------------------------------------\n` +
+        `Green Weight: ${green}g\n` +
+        `Current Weight: ${current}g\n` +
+        `Current Moisture Loss: ${loss}\n` +
+        `Target Finished Weight: ${target}\n` +
+        `Remaining to Lose: ${rem}\n` +
+        `Estimated Water Activity: ${aw}\n` +
+        `Logged via CureCraft (https://mohd34.github.io/curecraft/charcuterie-drying-calculator.html)`;
+
+      copyRecipeToClipboard(txt);
+    }
+
+    recalculateDrying();
+  </script>
+</body>
+</html>

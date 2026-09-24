@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meat Curing Time Calculator | Fick's Law Thickness & Penetration Days</title>
+  <meta name="description" content="Calculate minimum safe meat curing days based on cut thickness, slab vs cylinder geometry, and bone-in factor using Fick's law of osmotic diffusion.">
+  <link rel="canonical" href="https://mohd34.github.io/curecraft/curing-time-calculator.html">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Meat Curing Time Calculator | CureCraft">
+  <meta property="og:description" content="Calculate minimum safe curing days based on meat thickness and geometry. Fick's law penetration physics for bacon, ham, and charcuterie.">
+  <meta property="og:url" content="https://mohd34.github.io/curecraft/curing-time-calculator.html">
+  <meta property="og:image" content="https://mohd34.github.io/curecraft/assets/img/favicon.svg">
+  <meta name="twitter:card" content="summary">
+  
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "CureCraft Meat Curing Time Calculator",
+        "url": "https://mohd34.github.io/curecraft/curing-time-calculator.html",
+        "applicationCategory": "UtilityApplication",
+        "description": "Scientific curing duration estimator calculating penetration days based on cut thickness and shape."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo" aria-label="CureCraft Home">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="14" fill="#1C1917"/>
+          <path d="M14 18 C14 16 16 14 18 14 L42 14 C44 14 46 16 46 18 L46 34 C46 40 40 46 34 46 L18 46 C16 46 14 44 14 42 Z" fill="#DC2626"/>
+          <rect x="42" y="32" width="14" height="6" rx="3" fill="#D97706" transform="rotate(45 42 32)"/>
+          <polygon points="26,22 28,26 32,26 29,28 30,32 26,30 22,32 23,28 20,26 24,26" fill="#FFFFFF"/>
+        </svg>
+        <div>
+          <span>CureCraft</span>
+          <span class="brand-tagline">Charcuterie & Curing Math</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Dry Cure</a></li>
+          <li><a href="wet-brine-calculator.html">Wet Brine</a></li>
+          <li><a href="charcuterie-drying-calculator.html">Drying & Weight Loss</a></li>
+          <li><a href="curing-time-calculator.html" class="active">Curing Time</a></li>
+          <li><a href="nitrite-converter.html">Nitrite PPM</a></li>
+          <li><a href="biltong-calculator.html">Biltong</a></li>
+          <li><a href="seo-dashboard.html">SEO Hub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <ul class="breadcrumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-current="page">Curing Time & Penetration Calculator</li>
+    </ul>
+
+    <section class="hero">
+      <span class="hero-badge">⏱️ Fick's Second Law of Diffusion</span>
+      <h1>Meat Curing Time & Penetration Calculator</h1>
+      <p class="lead">
+        Determine the exact number of days required for salt and sodium nitrite to diffuse completely to the center of your meat cut based on thickness and geometry.
+      </p>
+    </section>
+
+    <div class="calc-grid">
+      <!-- Input Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Cut Geometry & Dimensions</h2>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--brand-wine);">Diffusion Physics</span>
+        </div>
+
+        <label class="form-label">
+          <span>Common Meat Cuts</span>
+          <span class="form-label-hint">Click to load standard dimensions</span>
+        </label>
+        <div class="preset-chips">
+          <button type="button" class="preset-chip active" onclick="applyCutPreset(38, 'slab', false)">🥓 Standard Pork Belly (1.5" Slab)</button>
+          <button type="button" class="preset-chip" onclick="applyCutPreset(50, 'slab', false)">🥓 Thick Pork Belly (2.0" Slab)</button>
+          <button type="button" class="preset-chip" onclick="applyCutPreset(75, 'cylinder', false)">🥩 Pork Tenderloin / Loin (3.0" Cylinder)</button>
+          <button type="button" class="preset-chip" onclick="applyCutPreset(100, 'cylinder', false)">🥩 Beef Eye of Round (4.0" Cylinder)</button>
+          <button type="button" class="preset-chip" onclick="applyCutPreset(125, 'slab', true)">🍖 Bone-In Ham (5.0" Bone-In)</button>
+        </div>
+
+        <form id="curing-time-form" onsubmit="return false;">
+          <div class="form-group">
+            <div class="form-label">
+              <span>Maximum Cut Thickness</span>
+              <span class="form-label-hint">Measure the thickest point</span>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <div class="input-group" style="flex:1;">
+                <input type="number" id="cut-thickness" class="form-input" value="38" min="5" max="300" step="1" oninput="recalculateTime()">
+                <span class="input-suffix" id="thickness-unit-label">mm</span>
+              </div>
+              <select id="thickness-unit" class="form-select" style="max-width:120px;" onchange="handleThicknessUnitChange()">
+                <option value="mm" selected>Millimeters (mm)</option>
+                <option value="in">Inches (in)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Cut Geometry / Shape</span>
+              <span class="form-label-hint">Affects surface diffusion pathways</span>
+            </div>
+            <select id="cut-geometry" class="form-select" onchange="recalculateTime()">
+              <option value="slab" selected>Flat Slab (Cured from Top & Bottom) [Bacon, Flat Pancetta, Flank]</option>
+              <option value="cylinder">Cylinder / Log (Radial Diffusion) [Tenderloin, Round, Salami, Rolled Pancetta]</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Bone Presence</span>
+              <span class="form-label-hint">Bone interfaces slow diffusion</span>
+            </div>
+            <select id="cut-bone" class="form-select" onchange="recalculateTime()">
+              <option value="boneless" selected>Boneless Cut (Uniform Tissue Diffusion)</option>
+              <option value="bonein">Bone-In Cut (Adds 25% Diffusion Time Buffer)</option>
+            </select>
+          </div>
+        </form>
+      </section>
+
+      <!-- Output Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Curing Duration Requirement</h2>
+          <span class="badge" style="background:var(--brand-sage-light); color:var(--brand-sage); padding:4px 8px; border-radius:6px; font-weight:700; font-size:0.8rem;">
+            ✓ Safe Core Penetration
+          </span>
+        </div>
+
+        <div class="safety-banner optimal">
+          <div style="font-size:1.4rem;">🛡️</div>
+          <div>
+            <strong>Diffusion Rate: 6.35 mm (1/4") Per Day</strong>
+            <p>Calculated with a mandatory 2-day safety buffer to ensure complete core saturation.</p>
+          </div>
+        </div>
+
+        <div class="stat-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:1.5rem;">
+          <div class="stat-box highlight">
+            <div class="stat-label">Minimum Safe Time</div>
+            <div class="stat-value" id="res-min-days" style="color:var(--brand-wine);">5 Days</div>
+            <div class="stat-sub">Earliest Safe Pull Date</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Recommended Duration</div>
+            <div class="stat-value" id="res-rec-days">8 Days</div>
+            <div class="stat-sub">Flattens Salinity Gradient</div>
+          </div>
+        </div>
+
+        <div class="results-panel">
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>Thickness Converted</span>
+              <span class="ingredient-sub">Metric vs Imperial dimension</span>
+            </div>
+            <span class="ingredient-val" id="res-dim-display">38.0 mm (1.50 in)</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>Effective Diffusion Distance</span>
+              <span class="ingredient-sub">Distance from closest exterior surface to deepest core</span>
+            </div>
+            <span class="ingredient-val" id="res-effective-dist">19.0 mm</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>Refrigeration Temperature</span>
+              <span class="ingredient-sub">Maintain constant cure temperature</span>
+            </div>
+            <span class="ingredient-val">36°F–40°F (2°C–4°C)</span>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="copyTimeRecommendation()">📋 Copy Curing Timeline</button>
+          <a href="index.html" class="btn btn-secondary">← Back to Dry Cure Rub Calculator</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Educational Content -->
+    <section class="guide-content">
+      <h2>The Physics of Osmotic Diffusion in Meat</h2>
+      <p>
+        When you apply salt and Prague Powder to the surface of a slab of pork belly or beef round, the cure dissolves in surface moisture and creates a steep concentration gradient.
+      </p>
+      <p>
+        According to <strong>Fick's Second Law of Diffusion</strong>, the rate at which solute molecules migrate through muscle tissue is governed by the diffusion coefficient of sodium chloride and sodium nitrite in meat:
+      </p>
+      <div class="formula-box">
+        Diffusion Velocity ≈ 6.35 mm (0.25 inches) per 24 hours at 38°F (3.3°C)<br>
+        Effective Penetration Depth for Flat Slabs = Thickness / 2 (curing from both sides)<br>
+        Minimum Safe Days = (Effective Depth in mm / 6.35) + 2 Safety Buffer Days
+      </div>
+
+      <h3>Why More Time Does No Harm in Equilibrium Curing</h3>
+      <p>
+        In traditional high-salt curing, leaving meat in the brine or salt rub for 3 extra days would turn it into a salt lick. But with <strong>equilibrium curing</strong>, the total amount of salt in the bag is strictly capped at your target (e.g., 2.50%). Once the core reaches 2.50% salt, net diffusion ceases.
+      </p>
+      <p>
+        Therefore, when using the equilibrium method, leaving your bacon in the refrigerator for 10 or 12 days instead of the calculated 7 days is actually beneficial: it ensures the salt gradient is completely uniform from surface to marrow.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <span>© 2026 CureCraft. 100% Client-Side Physics & Food Safety Engine.</span>
+      <a href="index.html">← Back to Universal Dry Cure Calculator</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/calculators.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    let currentThicknessMm = 38;
+
+    function applyCutPreset(mm, geom, bone) {
+      document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('thickness-unit').value = 'mm';
+      document.getElementById('cut-thickness').value = mm;
+      document.getElementById('thickness-unit-label').textContent = 'mm';
+      currentThicknessMm = mm;
+      document.getElementById('cut-geometry').value = geom;
+      document.getElementById('cut-bone').value = bone ? 'bonein' : 'boneless';
+      recalculateTime();
+    }
+
+    function handleThicknessUnitChange() {
+      const u = document.getElementById('thickness-unit').value;
+      const inp = document.getElementById('cut-thickness');
+      const val = parseFloat(inp.value) || 0;
+
+      if (u === 'mm') {
+        currentThicknessMm = val;
+        document.getElementById('thickness-unit-label').textContent = 'mm';
+      } else {
+        currentThicknessMm = val * 25.4;
+        document.getElementById('thickness-unit-label').textContent = 'in';
+      }
+      recalculateTime();
+    }
+
+    document.getElementById('cut-thickness').addEventListener('input', () => {
+      const u = document.getElementById('thickness-unit').value;
+      const val = parseFloat(document.getElementById('cut-thickness').value) || 0;
+      if (u === 'mm') currentThicknessMm = val;
+      else currentThicknessMm = val * 25.4;
+      recalculateTime();
+    });
+
+    function recalculateTime() {
+      const geom = document.getElementById('cut-geometry').value;
+      const isBoneIn = document.getElementById('cut-bone').value === 'bonein';
+
+      const res = CureMath.calculateCuringTime({
+        thicknessMm: currentThicknessMm,
+        geometry: geom,
+        isBoneIn: isBoneIn
+      });
+
+      if (res.error) return;
+
+      document.getElementById('res-min-days').textContent = `${res.minSafeDays} Days`;
+      document.getElementById('res-rec-days').textContent = `${res.recommendedDays} Days`;
+      document.getElementById('res-dim-display').textContent = `${res.thicknessMm} mm (${res.thicknessInches} in)`;
+      document.getElementById('res-effective-dist').textContent = `${(res.thicknessMm / 2).toFixed(1)} mm`;
+    }
+
+    function copyTimeRecommendation() {
+      const minD = document.getElementById('res-min-days').textContent;
+      const recD = document.getElementById('res-rec-days').textContent;
+      const dim = document.getElementById('res-dim-display').textContent;
+
+      const txt = `CureCraft Curing Duration Recommendation\n` +
+        `----------------------------------------\n` +
+        `Cut Thickness: ${dim}\n` +
+        `Minimum Safe Curing Time: ${minD}\n` +
+        `Recommended Duration: ${recD}\n` +
+        `Chamber Temp: 36°F–40°F (2°C–4°C), flip daily\n` +
+        `Calculated via CureCraft (https://mohd34.github.io/curecraft/curing-time-calculator.html)`;
+
+      copyRecipeToClipboard(txt);
+    }
+
+    recalculateTime();
+  </script>
+</body>
+</html>

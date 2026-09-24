@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equilibrium Curing Calculator | Prague Powder #1 & #2 Meat Cure Math</title>
+  <meta name="description" content="Calculate precision equilibrium meat cures for bacon, bresaola, and charcuterie. Computes exact salt, Prague Powder #1 & #2, sugar, and USDA nitrite PPM with automatic salt offset deduction.">
+  <link rel="canonical" href="https://mohd34.github.io/curecraft/">
+  
+  <!-- OpenGraph & Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Equilibrium Curing Calculator | CureCraft">
+  <meta property="og:description" content="Precision charcuterie calculator for bacon, ham, and dry-cured meats. Exact USDA nitrite PPM, Prague Powder #1 and #2 math, and automatic salt offset deduction.">
+  <meta property="og:url" content="https://mohd34.github.io/curecraft/">
+  <meta property="og:image" content="https://mohd34.github.io/curecraft/assets/img/favicon.svg">
+  <meta name="twitter:card" content="summary">
+  
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- Structured Data: WebApplication, HowTo, FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "CureCraft Equilibrium Curing Calculator",
+        "url": "https://mohd34.github.io/curecraft/",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript",
+        "description": "Scientific equilibrium meat curing calculator computing exact salt, Prague Powder #1 & #2, sugar, and USDA nitrite PPM with salt deduction.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "HowTo",
+        "name": "How to Measure an Equilibrium Meat Cure",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Weigh Meat",
+            "text": "Trim and weigh the raw green meat precisely on a digital scale in grams."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Calculate Prague Powder",
+            "text": "Measure 0.25% of the meat's weight in Prague Powder #1 (for cooked/smoked meats) or #2 (for dry-cured salumi)."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Calculate Deducted Salt",
+            "text": "Calculate target total salt (typically 2.25%–2.75%) and deduct the 93.75% salt present in the Prague Powder."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Vacuum Seal and Cure",
+            "text": "Rub the mixed cure over the meat, seal in a ziplock or vacuum bag, and refrigerate for the calculated equilibrium duration, flipping daily."
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the equilibrium curing method?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Equilibrium curing is a modern meat preservation technique where salt, sugar, and curing salts are added at exact target percentages of the meat's green weight. In a closed vacuum-sealed environment, the meat absorbs exactly 100% of the seasonings until osmotic equilibrium is reached, making it physically impossible to over-salt the meat."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much Prague Powder #1 do I use per pound or kilogram?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The standard safe usage rate for Prague Powder #1 (which contains 6.25% sodium nitrite) is 0.25% of total meat weight. For 1 kilogram (1000g) of meat, use exactly 2.5 grams. For 1 pound (453.6g) of meat, use 1.13 grams (approximately 1 level teaspoon per 5 lbs of meat)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why must salt be deducted when using curing salts?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Prague Powder #1 consists of 93.75% common table salt (sodium chloride) and only 6.25% sodium nitrite. When you add 2.5g of Prague Powder, you are also adding 2.34g of salt. If you fail to deduct this from your target salt percentage, your finished cured bacon or bresaola will end up unpleasantly salty."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo" aria-label="CureCraft Home">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="14" fill="#1C1917"/>
+          <path d="M14 18 C14 16 16 14 18 14 L42 14 C44 14 46 16 46 18 L46 34 C46 40 40 46 34 46 L18 46 C16 46 14 44 14 42 Z" fill="#DC2626"/>
+          <rect x="42" y="32" width="14" height="6" rx="3" fill="#D97706" transform="rotate(45 42 32)"/>
+          <polygon points="26,22 28,26 32,26 29,28 30,32 26,30 22,32 23,28 20,26 24,26" fill="#FFFFFF"/>
+        </svg>
+        <div>
+          <span>CureCraft</span>
+          <span class="brand-tagline">Charcuterie & Curing Math</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Dry Cure</a></li>
+          <li><a href="wet-brine-calculator.html">Wet Brine</a></li>
+          <li><a href="charcuterie-drying-calculator.html">Drying & Weight Loss</a></li>
+          <li><a href="curing-time-calculator.html">Curing Time</a></li>
+          <li><a href="nitrite-converter.html">Nitrite PPM</a></li>
+          <li><a href="biltong-calculator.html">Biltong</a></li>
+          <li><a href="seo-dashboard.html">SEO Hub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Header -->
+    <section class="hero">
+      <span class="hero-badge">🛡️ USDA FSIS Nitrite Standard Verified</span>
+      <h1>Universal Equilibrium Curing Calculator</h1>
+      <p class="lead">
+        Calculate foolproof dry cures for bacon, bresaola, pancetta, and charcuterie. Computes exact salt, Prague Powder #1 & #2, sugar, and nitrite PPM with automatic salt offset deduction.
+      </p>
+    </section>
+
+    <!-- Calculator Engine Grid -->
+    <div class="calc-grid">
+      <!-- Input Card -->
+      <section class="calc-card" aria-labelledby="calc-input-heading">
+        <div class="calc-card-header">
+          <h2 id="calc-input-heading" class="calc-card-title">Cure Parameters</h2>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--brand-wine);">Equilibrium Dry Method</span>
+        </div>
+
+        <!-- Preset Chips -->
+        <label class="form-label">
+          <span>Quick Recipe Presets</span>
+          <span class="form-label-hint">Click to autofill proven ratios</span>
+        </label>
+        <div class="preset-chips" role="group" aria-label="Curing Presets">
+          <button type="button" class="preset-chip active" onclick="applyPreset('bacon')">🥓 Classic Bacon (Pork Belly)</button>
+          <button type="button" class="preset-chip" onclick="applyPreset('bresaola')">🥩 Bresaola (Beef Round)</button>
+          <button type="button" class="preset-chip" onclick="applyPreset('pancetta')">🥓 Pancetta / Coppa</button>
+          <button type="button" class="preset-chip" onclick="applyPreset('duck')">🦆 Duck Breast Prosciutto</button>
+          <button type="button" class="preset-chip" onclick="applyPreset('pastrami')">🥪 Pastrami Dry Rub</button>
+          <button type="button" class="preset-chip" onclick="applyPreset('jerky')">🥩 Whole Muscle Jerky</button>
+        </div>
+
+        <form id="dry-cure-form" onsubmit="return false;">
+          <!-- Unit Selector & Meat Weight -->
+          <div class="form-group">
+            <div class="form-label">
+              <span>Trimmed Green Meat Weight</span>
+              <span class="form-label-hint">Raw weight without packaging</span>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <div class="input-group" style="flex:1;">
+                <input type="number" id="meat-weight" class="form-input" value="1000" min="1" step="any" required aria-label="Meat weight">
+                <span class="input-suffix" id="unit-label">grams</span>
+              </div>
+              <select id="weight-unit" class="form-select" style="max-width:110px;" onchange="handleUnitChange()">
+                <option value="g" selected>Grams (g)</option>
+                <option value="kg">Kilograms (kg)</option>
+                <option value="lb">Pounds (lb)</option>
+                <option value="oz">Ounces (oz)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Curing Salt Type -->
+          <div class="form-group">
+            <div class="form-label">
+              <span>Curing Salt Type</span>
+              <span class="form-label-hint">Crucial safety selection</span>
+            </div>
+            <select id="cure-type" class="form-select" onchange="recalculate()">
+              <option value="cure1" selected>Prague Powder #1 (Insta Cure #1 - 6.25% NaNO₂) [Bacon, Jerky, Cooked]</option>
+              <option value="cure2">Prague Powder #2 (Insta Cure #2 - 6.25% NaNO₂ + 4% NaNO₃) [Dry Cured Salumi]</option>
+              <option value="peklosol">EU Peklosol / Nitritpökelsalz (0.6% NaNO₂) [European Standard]</option>
+              <option value="none">Salt Only (No Nitrites / Uncured / Biltong)</option>
+            </select>
+          </div>
+
+          <!-- Total Target Salt Percentage -->
+          <div class="form-group">
+            <div class="form-label">
+              <span>Target Total Salt Content: <strong id="salt-pct-val" style="color:var(--brand-wine);">2.50%</strong></span>
+              <span class="form-label-hint">Standard bacon: 2.25% – 2.75%</span>
+            </div>
+            <input type="range" id="salt-pct" class="range-slider" min="1.5" max="3.5" step="0.05" value="2.5" oninput="updateSaltPct(this.value)" aria-label="Target salt percentage">
+          </div>
+
+          <!-- Sugar Percentage -->
+          <div class="form-group">
+            <div class="form-label">
+              <span>Sugar / Sweetener: <strong id="sugar-pct-val" style="color:var(--brand-salt);">1.00%</strong></span>
+              <span class="form-label-hint">Brown sugar, dextrose, or maple sugar</span>
+            </div>
+            <input type="range" id="sugar-pct" class="range-slider" min="0" max="3.0" step="0.1" value="1.0" oninput="updateSugarPct(this.value)" aria-label="Sugar percentage">
+          </div>
+
+          <!-- Custom Cure Percentage (Hidden / Advanced) -->
+          <div class="form-group" id="custom-cure-group" style="display:none;">
+            <div class="form-label">
+              <span>Prague Powder Ratio</span>
+              <span class="form-label-hint">Standard safe dose is 0.25%</span>
+            </div>
+            <div class="input-group">
+              <input type="number" id="custom-cure-pct" class="form-input" value="0.25" min="0.1" max="0.5" step="0.01" oninput="recalculate()">
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Results & Formula Card -->
+      <section class="calc-card" aria-labelledby="calc-results-heading">
+        <div class="calc-card-header">
+          <h2 id="calc-results-heading" class="calc-card-title">Cure Formula Specification</h2>
+          <span class="badge" id="safety-badge" style="background:var(--brand-sage-light); color:var(--brand-sage); padding:4px 8px; border-radius:6px; font-weight:700; font-size:0.8rem;">
+            ✓ USDA FSIS Compliant
+          </span>
+        </div>
+
+        <!-- Safety Banner Callout -->
+        <div id="safety-callout" class="safety-banner optimal">
+          <div style="font-size:1.4rem;">⚖️</div>
+          <div>
+            <strong id="safety-callout-title">Nitrite Concentration: 156.3 PPM</strong>
+            <p id="safety-callout-msg">Targeted exactly to USDA FSIS food safety limits for whole-muscle cured meats.</p>
+          </div>
+        </div>
+
+        <!-- Ingredients Measurement Breakdown -->
+        <div class="results-panel">
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🧂 Pure Table / Kosher Salt</span>
+              <span class="ingredient-sub">Target salt minus salt delivered by curing powder</span>
+            </div>
+            <span class="ingredient-val ingredient-highlight" id="res-pure-salt">22.66 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span id="res-cure-name">🌸 Prague Powder #1</span>
+              <span class="ingredient-sub" id="res-cure-sub">Delivers 156.3 PPM NaNO₂ + 2.34g NaCl</span>
+            </div>
+            <span class="ingredient-val" id="res-cure-weight" style="color:var(--brand-wine);">2.50 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🍁 Sugar / Sweetener</span>
+              <span class="ingredient-sub">Balances salinity and aids color preservation</span>
+            </div>
+            <span class="ingredient-val" id="res-sugar-weight">10.00 g</span>
+          </div>
+
+          <div class="ingredient-row" style="background:var(--bg-surface); padding:0.75rem; border-radius:var(--radius-sm); margin-top:0.5rem;">
+            <div class="ingredient-name">
+              <strong>Total Cure Rub Weight</strong>
+              <span class="ingredient-sub">Apply 100% of this mix evenly over meat</span>
+            </div>
+            <strong class="ingredient-val" id="res-total-mix" style="font-size:1.25rem;">35.16 g</strong>
+          </div>
+        </div>
+
+        <!-- Key Physics & Safety Metrics -->
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="stat-label">Total Effective Salt</div>
+            <div class="stat-value" id="res-total-salt">2.50%</div>
+            <div class="stat-sub">True Salinity</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Sodium Nitrite (NaNO₂)</div>
+            <div class="stat-value" id="res-nitrite-ppm" style="color:var(--brand-wine);">156 PPM</div>
+            <div class="stat-sub">USDA Target: 156</div>
+          </div>
+          <div class="stat-box" id="nitrate-stat-box" style="display:none;">
+            <div class="stat-label">Sodium Nitrate (NaNO₃)</div>
+            <div class="stat-value" id="res-nitrate-ppm" style="color:var(--brand-amber);">100 PPM</div>
+            <div class="stat-sub">Slow Time-Release</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Est. Min Cure Time</div>
+            <div class="stat-value" id="res-cure-days">7 Days</div>
+            <div class="stat-sub">In 38°F (3°C) fridge</div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="copyCurrentFormula()">📋 Copy Recipe Card</button>
+          <button class="btn btn-secondary" onclick="window.print()">🖨️ Print Batch Sheet</button>
+          <a href="curing-time-calculator.html" class="btn btn-outline">⏱️ Detailed Curing Time →</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Complete Guide & Science Section -->
+    <section class="guide-content">
+      <h2>The Science of Equilibrium Meat Curing</h2>
+      <p>
+        For centuries, charcuterie makers used the traditional <strong>"salt box" method</strong>: meat was dredged in an excess tub of salt, left for a rough number of days based on thickness, and then rinsed or soaked to remove surface salinity. This method often caused inconsistent results—meat that was either dangerously under-cured in the core or overwhelmingly, inedibly salty on the exterior.
+      </p>
+      <p>
+        <strong>Equilibrium (EQ) Curing</strong> represents the modern food science gold standard. In an equilibrium cure, the exact required amounts of salt, sugar, and curing salts are calculated as strict percentages of the meat's trimmed green weight. The meat is vacuum-sealed or sealed in an airtight bag with 100% of the rub. Over the course of 7 to 14 days, the principle of <em>osmotic diffusion</em> causes the salt and nitrite molecules to migrate evenly throughout every muscle fiber until the meat reaches uniform chemical equilibrium.
+      </p>
+
+      <div class="formula-box">
+        <strong>The Fundamental Equilibrium Equations:</strong><br><br>
+        1. Cure #1 Weight (g) = Meat Weight (g) × 0.0025 (0.25%)<br>
+        2. Sodium Nitrite (PPM) = [Cure #1 (g) × 0.0625 / Meat Weight (g)] × 1,000,000 = 156.25 PPM<br>
+        3. Salt Deduction = Cure #1 Weight (g) × 0.9375 (93.75% NaCl)<br>
+        4. Pure Salt to Add (g) = [Meat Weight (g) × Target Salt %] - Salt Deduction
+      </div>
+
+      <h3>Why Salt Deduction is Non-Negotiable</h3>
+      <p>
+        Standard commercial Prague Powder #1 contains exactly <strong>6.25% sodium nitrite</strong> and <strong>93.75% sodium chloride (common salt)</strong>, tinted pink with Red Dye #3 to prevent accidental culinary misuse.
+      </p>
+      <p>
+        Most amateur curing calculators make a critical error: they instruct users to add 2.5% kosher salt <em>plus</em> 0.25% Prague Powder #1. By failing to account for the 93.75% salt carrier in the pink salt, they inadvertently raise the salt content to 2.73%. For whole-muscle cuts like coppa or bresaola that subsequently undergo 35% to 40% moisture loss in a curing chamber, this error concentrates further, yielding an unpleasantly salty product. CureCraft automatically performs the exact algebraic deduction.
+      </p>
+
+      <h3>Prague Powder #1 vs. Prague Powder #2</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Curing Agent</th>
+            <th>Active Ingredients</th>
+            <th>Recommended Meat Types</th>
+            <th>Curing Timeline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Prague Powder #1</strong><br>(Insta Cure #1 / Pink Salt)</td>
+            <td>6.25% Sodium Nitrite (NaNO₂)<br>93.75% Table Salt (NaCl)</td>
+            <td>Bacon, ham, pastrami, corned beef, smoked poultry, jerky, fresh sausages.</td>
+            <td>Short cures (under 30 days) that will be cooked, hot-smoked, or refrigerated.</td>
+          </tr>
+          <tr>
+            <td><strong>Prague Powder #2</strong><br>(Insta Cure #2)</td>
+            <td>6.25% Sodium Nitrite (NaNO₂)<br>4.00% Sodium Nitrate (NaNO₃)<br>89.75% Table Salt (NaCl)</td>
+            <td>Dry-cured salumi: Salami, Prosciutto, Bresaola, Capicola (Coppa), Pancetta, Lonzino.</td>
+            <td>Long cures (30 days to 6+ months). Nitrate acts as a time-release reservoir.</td>
+          </tr>
+          <tr>
+            <td><strong>EU Peklosol</strong><br>(Nitritpökelsalz - NPS)</td>
+            <td>0.5%–0.6% Sodium Nitrite (NaNO₂)<br>99.4% Table Salt (NaCl)</td>
+            <td>Traditional European charcuterie and hams. Pre-blended salt standard.</td>
+            <td>Used as the primary salt itself (2.4%–2.6% total weight). Zero added salt needed.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Frequently Asked Questions -->
+      <h2 style="margin-top:2.5rem;">Frequently Asked Questions</h2>
+      <div style="margin-top:1.5rem;">
+        <h3>Can you over-cure meat using the equilibrium method?</h3>
+        <p>
+          No. In a traditional salt box, leaving meat in the salt for an extra two days can ruin the batch. With equilibrium curing, the meat can remain in the refrigerator for an extra week without absorbing any more salt than the exact percentage you weighed into the bag.
+        </p>
+
+        <h3>Can I cure meat without any Prague Powder or nitrites?</h3>
+        <p>
+          Yes, but only under specific circumstances. Fresh meats cooked immediately or thin sliced meats dried quickly in well-ventilated warm environments with high airflow (such as traditional South African biltong using vinegar) can be made without nitrites. However, for whole muscle cuts cured in a refrigerator, bacon that is cold-smoked, or fermented sausages, nitrites are mandatory to prevent deadly <em>Clostridium botulinum</em> bacterial growth.
+        </p>
+
+        <h3>What digital scale do I need for curing salts?</h3>
+        <p>
+          Always use a <strong>0.01g resolution jewelry/precision scale</strong> for Prague Powder. A standard 1g kitchen scale has a ±1g error tolerance; if your recipe calls for 2.5g of Cure #1, a 1g scale could deliver 3.5g (a 40% overdose) or 1.5g (a 40% underdose).
+        </p>
+      </div>
+    </section>
+
+    <!-- Cross-Tool Recommendations Grid -->
+    <section>
+      <h2 style="font-size:1.6rem; font-weight:800; margin-bottom:1.25rem;">Complete Charcuterie Calculation Suite</h2>
+      <div class="tool-grid">
+        <a href="wet-brine-calculator.html" class="tool-card">
+          <div class="tool-icon">🌊</div>
+          <h3 class="tool-title">Equilibrium Wet Brine</h3>
+          <p class="tool-desc">Total system weight math for wet-cured hams, pastrami, and corned beef brisket immersion baths.</p>
+          <span class="tool-link-cta">Open Calculator →</span>
+        </a>
+        <a href="charcuterie-drying-calculator.html" class="tool-card">
+          <div class="tool-icon">📉</div>
+          <h3 class="tool-title">Drying & Weight Loss Tracker</h3>
+          <p class="tool-desc">Track moisture loss from green weight to target 35%–40% loss and monitor water activity (aw) safety.</p>
+          <span class="tool-link-cta">Open Calculator →</span>
+        </a>
+        <a href="curing-time-calculator.html" class="tool-card">
+          <div class="tool-icon">⏱️</div>
+          <h3 class="tool-title">Curing Time Estimator</h3>
+          <p class="tool-desc">Fick's law penetration physics: calculate minimum curing days based on slab thickness and geometry.</p>
+          <span class="tool-link-cta">Open Calculator →</span>
+        </a>
+        <a href="nitrite-converter.html" class="tool-card">
+          <div class="tool-icon">🌐</div>
+          <h3 class="tool-title">International Nitrite Converter</h3>
+          <p class="tool-desc">Safely convert recipes between US Prague Powder, EU Peklosol, and Australian curing salt.</p>
+          <span class="tool-link-cta">Open Calculator →</span>
+        </a>
+        <a href="biltong-calculator.html" class="tool-card">
+          <div class="tool-icon">🥩</div>
+          <h3 class="tool-title">Biltong & Jerky Scaler</h3>
+          <p class="tool-desc">Traditional South African vinegar dip and coarse coriander spice blend with wet-to-dry yield modeling.</p>
+          <span class="tool-link-cta">Open Calculator →</span>
+        </a>
+        <a href="guides/equilibrium-curing-guide.html" class="tool-card">
+          <div class="tool-icon">📖</div>
+          <h3 class="tool-title">Equilibrium Curing Guide</h3>
+          <p class="tool-desc">Deep-dive manual on osmotic diffusion, vacuum sealing, and the chemistry of meat preservation.</p>
+          <span class="tool-link-cta">Read Guide →</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>CureCraft Engine</h4>
+        <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+          The open-access mathematical intelligence suite for artisan charcuterie, home bacon curing, and USDA FSIS food safety standards.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="index.html">Equilibrium Dry Cure</a></li>
+          <li><a href="wet-brine-calculator.html">Equilibrium Wet Brine</a></li>
+          <li><a href="charcuterie-drying-calculator.html">Weight Loss & Water Activity</a></li>
+          <li><a href="curing-time-calculator.html">Curing Time Estimator</a></li>
+          <li><a href="nitrite-converter.html">Nitrite PPM Safety Converter</a></li>
+          <li><a href="biltong-calculator.html">Biltong Spice & Yield</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Guides & Science</h4>
+        <ul>
+          <li><a href="guides/equilibrium-curing-guide.html">Equilibrium Curing Explained</a></li>
+          <li><a href="guides/prague-powder-guide.html">Prague Powder #1 vs #2</a></li>
+          <li><a href="guides/charcuterie-weight-loss-guide.html">Weight Loss & Case Hardening</a></li>
+          <li><a href="seo-dashboard.html">Live SEO Performance Hub</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal & Safety</h4>
+        <ul>
+          <li><a href="legal/privacy.html">Privacy Policy</a></li>
+          <li><a href="legal/terms.html">Terms & Food Safety Disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CureCraft. 100% Client-Side Physics & Food Safety Engine.</span>
+      <span>Compliant with USDA FSIS 9 CFR § 424.21.</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/calculators.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    let currentGrams = 1000;
+
+    const PRESETS = {
+      bacon: { saltPct: 2.5, cureType: 'cure1', sugarPct: 1.5, name: 'Classic Bacon (Pork Belly)' },
+      bresaola: { saltPct: 2.75, cureType: 'cure2', sugarPct: 0.5, name: 'Bresaola (Beef Eye of Round)' },
+      pancetta: { saltPct: 2.6, cureType: 'cure2', sugarPct: 0.8, name: 'Pancetta / Capicola' },
+      duck: { saltPct: 2.5, cureType: 'cure2', sugarPct: 1.0, name: 'Duck Breast Prosciutto' },
+      pastrami: { saltPct: 2.5, cureType: 'cure1', sugarPct: 1.5, name: 'Pastrami Dry Rub' },
+      jerky: { saltPct: 2.0, cureType: 'cure1', sugarPct: 1.0, name: 'Whole Muscle Jerky' }
+    };
+
+    function applyPreset(key) {
+      document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      const p = PRESETS[key];
+      if (!p) return;
+      document.getElementById('salt-pct').value = p.saltPct;
+      document.getElementById('salt-pct-val').textContent = p.saltPct.toFixed(2) + '%';
+      document.getElementById('cure-type').value = p.cureType;
+      document.getElementById('sugar-pct').value = p.sugarPct;
+      document.getElementById('sugar-pct-val').textContent = p.sugarPct.toFixed(2) + '%';
+      recalculate();
+    }
+
+    function updateSaltPct(val) {
+      document.getElementById('salt-pct-val').textContent = parseFloat(val).toFixed(2) + '%';
+      recalculate();
+    }
+
+    function updateSugarPct(val) {
+      document.getElementById('sugar-pct-val').textContent = parseFloat(val).toFixed(2) + '%';
+      recalculate();
+    }
+
+    function handleUnitChange() {
+      const unit = document.getElementById('weight-unit').value;
+      const input = document.getElementById('meat-weight');
+      const val = parseFloat(input.value) || 0;
+
+      if (unit === 'g') {
+        currentGrams = val;
+        document.getElementById('unit-label').textContent = 'grams';
+      } else if (unit === 'kg') {
+        currentGrams = val * 1000;
+        document.getElementById('unit-label').textContent = 'kg';
+      } else if (unit === 'lb') {
+        currentGrams = val * 453.592;
+        document.getElementById('unit-label').textContent = 'pounds';
+      } else if (unit === 'oz') {
+        currentGrams = val * 28.3495;
+        document.getElementById('unit-label').textContent = 'ounces';
+      }
+      recalculate();
+    }
+
+    document.getElementById('meat-weight').addEventListener('input', () => {
+      const unit = document.getElementById('weight-unit').value;
+      const val = parseFloat(document.getElementById('meat-weight').value) || 0;
+      if (unit === 'g') currentGrams = val;
+      else if (unit === 'kg') currentGrams = val * 1000;
+      else if (unit === 'lb') currentGrams = val * 453.592;
+      else if (unit === 'oz') currentGrams = val * 28.3495;
+      recalculate();
+    });
+
+    function recalculate() {
+      const cureType = document.getElementById('cure-type').value;
+      const saltPct = parseFloat(document.getElementById('salt-pct').value);
+      const sugarPct = parseFloat(document.getElementById('sugar-pct').value);
+
+      const res = CureMath.calculateEquilibriumDryCure({
+        meatWeightG: currentGrams,
+        targetSaltPct: saltPct,
+        cureType: cureType,
+        targetSugarPct: sugarPct
+      });
+
+      if (res.error) return;
+
+      document.getElementById('res-pure-salt').textContent = res.pureSaltG.toFixed(2) + ' g';
+      document.getElementById('res-sugar-weight').textContent = res.sugarG.toFixed(2) + ' g';
+      document.getElementById('res-total-mix').textContent = res.totalCureMixG.toFixed(2) + ' g';
+      document.getElementById('res-total-salt').textContent = res.totalEffectiveSaltG.toFixed(2) + '%';
+      document.getElementById('res-nitrite-ppm').textContent = res.nitritePpm.toFixed(0) + ' PPM';
+
+      // Cure display logic
+      const cureNameEl = document.getElementById('res-cure-name');
+      const cureSubEl = document.getElementById('res-cure-sub');
+      const cureWeightEl = document.getElementById('res-cure-weight');
+      const nitrateBox = document.getElementById('nitrate-stat-box');
+
+      if (cureType === 'cure1') {
+        cureNameEl.textContent = '🌸 Prague Powder #1';
+        cureSubEl.textContent = `Delivers ${res.nitritePpm.toFixed(1)} PPM NaNO₂ + ${res.saltFromCureG.toFixed(2)}g deducted salt`;
+        cureWeightEl.textContent = res.cureWeightG.toFixed(2) + ' g';
+        nitrateBox.style.display = 'none';
+      } else if (cureType === 'cure2') {
+        cureNameEl.textContent = '🌸 Prague Powder #2';
+        cureSubEl.textContent = `Delivers ${res.nitritePpm.toFixed(1)} PPM NaNO₂ & ${res.nitratePpm.toFixed(1)} PPM NaNO₃ + ${res.saltFromCureG.toFixed(2)}g deducted salt`;
+        cureWeightEl.textContent = res.cureWeightG.toFixed(2) + ' g';
+        nitrateBox.style.display = 'block';
+        document.getElementById('res-nitrate-ppm').textContent = res.nitratePpm.toFixed(0) + ' PPM';
+      } else if (cureType === 'peklosol') {
+        cureNameEl.textContent = '🇩🇪 EU Peklosol (NPS 0.6%)';
+        cureSubEl.textContent = `Delivers ${res.nitritePpm.toFixed(1)} PPM NaNO₂ + ${res.saltFromCureG.toFixed(2)}g salt. Do NOT add extra salt!`;
+        cureWeightEl.textContent = res.cureWeightG.toFixed(2) + ' g';
+        nitrateBox.style.display = 'none';
+      } else {
+        cureNameEl.textContent = '🚫 No Nitrites (Salt Only)';
+        cureSubEl.textContent = 'Uncured fresh style. Refrigerate/freeze immediately.';
+        cureWeightEl.textContent = '0.00 g';
+        nitrateBox.style.display = 'none';
+      }
+
+      // Safety callout and badge
+      const badge = document.getElementById('safety-badge');
+      const banner = document.getElementById('safety-callout');
+      const title = document.getElementById('safety-callout-title');
+      const msg = document.getElementById('safety-callout-msg');
+
+      if (res.safetyStatus === 'optimal') {
+        badge.textContent = '✓ USDA FSIS Compliant';
+        badge.style.background = 'var(--brand-sage-light)';
+        badge.style.color = 'var(--brand-sage)';
+        banner.className = 'safety-banner optimal';
+        title.textContent = `Nitrite Concentration: ${res.nitritePpm.toFixed(1)} PPM`;
+        msg.textContent = res.safetyMessage;
+      } else if (res.safetyStatus === 'warning_high') {
+        badge.textContent = '⚠️ Exceeds USDA Standard';
+        badge.style.background = 'var(--brand-danger-light)';
+        badge.style.color = 'var(--brand-danger)';
+        banner.className = 'safety-banner danger';
+        title.textContent = `Caution: High Nitrite (${res.nitritePpm.toFixed(1)} PPM)`;
+        msg.textContent = res.safetyMessage;
+      } else {
+        badge.textContent = 'ℹ️ Low / Zero Nitrite';
+        badge.style.background = 'var(--brand-amber-light)';
+        badge.style.color = 'var(--brand-amber)';
+        banner.className = 'safety-banner warning';
+        title.textContent = `Nitrite Level: ${res.nitritePpm.toFixed(1)} PPM`;
+        msg.textContent = res.safetyMessage;
+      }
+
+      // Estimate days
+      const days = Math.max(5, Math.ceil(Math.sqrt(currentGrams / 100) + 3));
+      document.getElementById('res-cure-days').textContent = `${days} Days`;
+    }
+
+    function copyCurrentFormula() {
+      const pureSalt = document.getElementById('res-pure-salt').textContent;
+      const cureWeight = document.getElementById('res-cure-weight').textContent;
+      const cureName = document.getElementById('res-cure-name').textContent;
+      const sugar = document.getElementById('res-sugar-weight').textContent;
+      const totalMix = document.getElementById('res-total-mix').textContent;
+      const ppm = document.getElementById('res-nitrite-ppm').textContent;
+
+      const txt = `CureCraft Equilibrium Cure Specification\n` +
+        `----------------------------------------\n` +
+        `Green Meat Weight: ${currentGrams.toFixed(1)}g\n` +
+        `Pure Kosher / Table Salt: ${pureSalt}\n` +
+        `${cureName}: ${cureWeight}\n` +
+        `Sugar / Sweetener: ${sugar}\n` +
+        `Total Cure Rub: ${totalMix}\n` +
+        `Effective Nitrite Concentration: ${ppm}\n` +
+        `Calculated via CureCraft (https://mohd34.github.io/curecraft/)`;
+
+      copyRecipeToClipboard(txt);
+    }
+
+    // Run on startup
+    recalculate();
+  </script>
+</body>
+</html>

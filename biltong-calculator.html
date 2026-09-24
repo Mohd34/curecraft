@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biltong Spice & Yield Calculator | Traditional South African Cured Beef</title>
+  <meta name="description" content="Calculate authentic South African biltong spice ratios and dehydration yields. Exact vinegar bath volume, toasted coriander, black pepper, and salt formulas.">
+  <link rel="canonical" href="https://mohd34.github.io/curecraft/biltong-calculator.html">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Biltong Spice & Yield Calculator | CureCraft">
+  <meta property="og:description" content="Traditional South African biltong spice recipe and dried yield calculator. Authentic vinegar and coriander ratios.">
+  <meta property="og:url" content="https://mohd34.github.io/curecraft/biltong-calculator.html">
+  <meta property="og:image" content="https://mohd34.github.io/curecraft/assets/img/favicon.svg">
+  <meta name="twitter:card" content="summary">
+  
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "CureCraft Biltong Spice & Yield Calculator",
+        "url": "https://mohd34.github.io/curecraft/biltong-calculator.html",
+        "applicationCategory": "UtilityApplication",
+        "description": "Calculates traditional South African biltong vinegar bath, coarse coriander spice blend, and wet-to-dry yields."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo" aria-label="CureCraft Home">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="14" fill="#1C1917"/>
+          <path d="M14 18 C14 16 16 14 18 14 L42 14 C44 14 46 16 46 18 L46 34 C46 40 40 46 34 46 L18 46 C16 46 14 44 14 42 Z" fill="#DC2626"/>
+          <rect x="42" y="32" width="14" height="6" rx="3" fill="#D97706" transform="rotate(45 42 32)"/>
+          <polygon points="26,22 28,26 32,26 29,28 30,32 26,30 22,32 23,28 20,26 24,26" fill="#FFFFFF"/>
+        </svg>
+        <div>
+          <span>CureCraft</span>
+          <span class="brand-tagline">Charcuterie & Curing Math</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Dry Cure</a></li>
+          <li><a href="wet-brine-calculator.html">Wet Brine</a></li>
+          <li><a href="charcuterie-drying-calculator.html">Drying & Weight Loss</a></li>
+          <li><a href="curing-time-calculator.html">Curing Time</a></li>
+          <li><a href="nitrite-converter.html">Nitrite PPM</a></li>
+          <li><a href="biltong-calculator.html" class="active">Biltong</a></li>
+          <li><a href="seo-dashboard.html">SEO Hub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <ul class="breadcrumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-current="page">Biltong Spice & Yield Calculator</li>
+    </ul>
+
+    <section class="hero">
+      <span class="hero-badge">🇿🇦 Authentic Heritage Charcuterie</span>
+      <h1>Traditional Biltong Spice & Dried Yield Calculator</h1>
+      <p class="lead">
+        Formulate authentic South African biltong. Calculate spiced brown vinegar dipping ratios, coarse toasted coriander, sea salt, black pepper, and wet-to-dry yield modeling.
+      </p>
+    </section>
+
+    <div class="calc-grid">
+      <!-- Input Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Beef Batch Parameters</h2>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--brand-wine);">Silverside / Top Round</span>
+        </div>
+
+        <form id="biltong-form" onsubmit="return false;">
+          <div class="form-group">
+            <div class="form-label">
+              <span>Raw Beef Weight</span>
+              <span class="form-label-hint">Trimmed meat sliced into steaks</span>
+            </div>
+            <div class="input-group">
+              <input type="number" id="biltong-meat-weight" class="form-input" value="2000" min="100" step="50" oninput="recalculateBiltong()">
+              <span class="input-suffix">grams</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Coarse Sea Salt: <strong id="biltong-salt-val" style="color:var(--brand-wine);">2.20%</strong></span>
+              <span class="form-label-hint">Standard authentic range: 2.0%–2.4%</span>
+            </div>
+            <input type="range" id="biltong-salt-pct" class="range-slider" min="1.8" max="2.8" step="0.1" value="2.2" oninput="updateBiltongSalt(this.value)">
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Toasted Coarse Coriander: <strong id="biltong-coriander-val" style="color:var(--brand-salt);">1.80%</strong></span>
+              <span class="form-label-hint">Lightly crushed whole coriander seed</span>
+            </div>
+            <input type="range" id="biltong-coriander-pct" class="range-slider" min="1.0" max="2.5" step="0.1" value="1.8" oninput="updateBiltongCoriander(this.value)">
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Cracked Black Pepper: <strong id="biltong-pepper-val">0.60%</strong></span>
+              <span class="form-label-hint">Coarse butcher grind</span>
+            </div>
+            <input type="range" id="biltong-pepper-pct" class="range-slider" min="0.3" max="1.2" step="0.05" value="0.6" oninput="updateBiltongPepper(this.value)">
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">
+              <span>Desired Dryness (Moisture Loss): <strong id="biltong-loss-val">52.0%</strong></span>
+              <span class="form-label-hint">Wet with fat: 45–48% | Traditional: 50–55% | Hard: 58–60%</span>
+            </div>
+            <input type="range" id="biltong-loss-pct" class="range-slider" min="40" max="65" step="1" value="52" oninput="updateBiltongLoss(this.value)">
+          </div>
+        </form>
+      </section>
+
+      <!-- Output Card -->
+      <section class="calc-card">
+        <div class="calc-card-header">
+          <h2 class="calc-card-title">Authentic Biltong Spice Formula</h2>
+          <span class="badge" style="background:var(--brand-sage-light); color:var(--brand-sage); padding:4px 8px; border-radius:6px; font-weight:700; font-size:0.8rem;">
+            ✓ Traditional Heritage Ratio
+          </span>
+        </div>
+
+        <div class="safety-banner optimal">
+          <div style="font-size:1.4rem;">🥩</div>
+          <div>
+            <strong>Estimated Dried Yield: <span id="res-biltong-yield">960.0 g</span></strong>
+            <p>From 2000g of raw trimmed beef, expect ~960g of perfectly cured traditional biltong.</p>
+          </div>
+        </div>
+
+        <div class="results-panel">
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🍾 Spiced Brown / Cider Vinegar</span>
+              <span class="ingredient-sub">Brief dip or splash to lower surface pH</span>
+            </div>
+            <span class="ingredient-val ingredient-highlight" id="res-biltong-vinegar">80.0 ml</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🧂 Coarse Sea Salt / Kosher Salt</span>
+              <span class="ingredient-sub">Drives moisture loss and preservation</span>
+            </div>
+            <span class="ingredient-val" id="res-biltong-salt">44.0 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🌿 Roasted Coarse Coriander Seeds</span>
+              <span class="ingredient-sub">Dry roasted in pan until fragrant & coarsely crushed</span>
+            </div>
+            <span class="ingredient-val" id="res-biltong-coriander" style="color:var(--brand-salt);">36.0 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🌶️ Cracked Black Pepper</span>
+              <span class="ingredient-sub">Course grind for savory heat</span>
+            </div>
+            <span class="ingredient-val" id="res-biltong-pepper">12.0 g</span>
+          </div>
+
+          <div class="ingredient-row">
+            <div class="ingredient-name">
+              <span>🍁 Brown Sugar</span>
+              <span class="ingredient-sub">Balances acidity of vinegar</span>
+            </div>
+            <span class="ingredient-val" id="res-biltong-sugar">16.0 g</span>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="stat-label">Hanging Duration</div>
+            <div class="stat-value">3–5 Days</div>
+            <div class="stat-sub">In Biltong Box (Warm Air)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Moisture Loss</div>
+            <div class="stat-value" id="res-loss-display">52.0%</div>
+            <div class="stat-sub">Safe Shelf Stability</div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="copyBiltongRecipe()">📋 Copy Biltong Spice Blend</button>
+          <button class="btn btn-secondary" onclick="window.print()">🖨️ Print Batch Card</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Educational Content -->
+    <section class="guide-content">
+      <h2>How Biltong Achieves Food Safety Without Nitrites</h2>
+      <p>
+        Unlike European salumi or American bacon, traditional South African biltong uses <strong>no curing salts or chemical nitrites</strong>.
+      </p>
+      <p>
+        Safety is achieved through three synergistic hurdles:
+      </p>
+      <ol>
+        <li><strong>Acetic Acid Barrier:</strong> Dipping the beef strips in brown vinegar or Worcestershire sauce lowers surface pH below 4.6, immediately inhibiting bacterial growth.</li>
+        <li><strong>Rapid Convective Drying:</strong> Slices are dried in a warm, gentle air-stream (a biltong box with a 40W bulb or low-speed fan at 68°F–77°F / 20°C–25°C), quickly dehydrating the exterior before mold can germinate.</li>
+        <li><strong>High Coarse Coriander Load:</strong> Coriander seed contains natural essential oils (primarily <em>linalool</em>) that possess proven antimicrobial properties against foodborne pathogens.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <span>© 2026 CureCraft. 100% Client-Side Physics & Food Safety Engine.</span>
+      <a href="index.html">← Back to Universal Dry Cure Calculator</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/calculators.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    function updateBiltongSalt(v) {
+      document.getElementById('biltong-salt-val').textContent = parseFloat(v).toFixed(2) + '%';
+      recalculateBiltong();
+    }
+    function updateBiltongCoriander(v) {
+      document.getElementById('biltong-coriander-val').textContent = parseFloat(v).toFixed(2) + '%';
+      recalculateBiltong();
+    }
+    function updateBiltongPepper(v) {
+      document.getElementById('biltong-pepper-val').textContent = parseFloat(v).toFixed(2) + '%';
+      recalculateBiltong();
+    }
+    function updateBiltongLoss(v) {
+      document.getElementById('biltong-loss-val').textContent = parseFloat(v).toFixed(1) + '%';
+      recalculateBiltong();
+    }
+
+    function recalculateBiltong() {
+      const meatG = parseFloat(document.getElementById('biltong-meat-weight').value) || 0;
+      const saltPct = parseFloat(document.getElementById('biltong-salt-pct').value) || 2.2;
+      const corPct = parseFloat(document.getElementById('biltong-coriander-pct').value) || 1.8;
+      const pepPct = parseFloat(document.getElementById('biltong-pepper-pct').value) || 0.6;
+      const lossPct = parseFloat(document.getElementById('biltong-loss-pct').value) || 52;
+
+      const res = CureMath.calculateBiltong({
+        rawMeatG: meatG,
+        saltPct: saltPct,
+        corianderPct: corPct,
+        pepperPct: pepPct,
+        expectedLossPct: lossPct
+      });
+
+      if (res.error) return;
+
+      document.getElementById('res-biltong-yield').textContent = res.estimatedYieldG.toFixed(1) + ' g';
+      document.getElementById('res-biltong-vinegar').textContent = res.vinegarMl.toFixed(1) + ' ml';
+      document.getElementById('res-biltong-salt').textContent = res.saltG.toFixed(1) + ' g';
+      document.getElementById('res-biltong-coriander').textContent = res.corianderG.toFixed(1) + ' g';
+      document.getElementById('res-biltong-pepper').textContent = res.pepperG.toFixed(1) + ' g';
+      document.getElementById('res-biltong-sugar').textContent = res.sugarG.toFixed(1) + ' g';
+      document.getElementById('res-loss-display').textContent = res.expectedLossPct.toFixed(1) + '%';
+    }
+
+    function copyBiltongRecipe() {
+      const meat = document.getElementById('biltong-meat-weight').value;
+      const vin = document.getElementById('res-biltong-vinegar').textContent;
+      const salt = document.getElementById('res-biltong-salt').textContent;
+      const cor = document.getElementById('res-biltong-coriander').textContent;
+      const pep = document.getElementById('res-biltong-pepper').textContent;
+      const sug = document.getElementById('res-biltong-sugar').textContent;
+      const yld = document.getElementById('res-biltong-yield').textContent;
+
+      const txt = `CureCraft Traditional South African Biltong Batch\n` +
+        `-------------------------------------------------\n` +
+        `Raw Beef Weight: ${meat}g\n` +
+        `Spiced Brown Vinegar Dip: ${vin}\n` +
+        `Coarse Sea Salt: ${salt}\n` +
+        `Toasted Crushed Coriander: ${cor}\n` +
+        `Cracked Black Pepper: ${pep}\n` +
+        `Brown Sugar: ${sug}\n` +
+        `Expected Dried Yield: ${yld}\n` +
+        `Calculated via CureCraft (https://mohd34.github.io/curecraft/biltong-calculator.html)`;
+
+      copyRecipeToClipboard(txt);
+    }
+
+    recalculateBiltong();
+  </script>
+</body>
+</html>

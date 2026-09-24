@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="cureGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DC2626"/>
+      <stop offset="100%" stop-color="#991B1B"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Shield -->
+  <rect width="64" height="64" rx="14" fill="#1C1917"/>
+  <!-- Charcuterie Cleaver / Cure Knife -->
+  <path d="M14 18 C14 16 16 14 18 14 L42 14 C44 14 46 16 46 18 L46 34 C46 40 40 46 34 46 L18 46 C16 46 14 44 14 42 Z" fill="url(#cureGrad)"/>
+  <!-- Handle -->
+  <rect x="42" y="32" width="14" height="6" rx="3" fill="#D97706" transform="rotate(45 42 32)"/>
+  <!-- Salt Crystals (3 sparkling points) -->
+  <polygon points="26,22 28,26 32,26 29,28 30,32 26,30 22,32 23,28 20,26 24,26" fill="#FFFFFF" opacity="0.9"/>
+  <circle cx="36" cy="24" r="2" fill="#FEF3C7"/>
+  <circle cx="22" cy="38" r="1.5" fill="#FEF3C7"/>
+</svg>
